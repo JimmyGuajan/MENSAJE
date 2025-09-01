@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShaoMensaje</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>¡Buenos días Alegria!</h1>
+        
+        <div class="message">
+            <p>Arrastra las letras a los recuadros para formar una palabra especial:</p>
+            
+            <div class="drop-zones">
+                <div class="drop-zone" data-letter=""></div>
+                <div class="drop-zone" data-letter=""></div>
+                <div class="drop-zone" data-letter=""></div>
+                <div class="drop-zone" data-letter=""></div>
+                <div class="drop-zone" data-letter=""></div>
+                <div class="drop-zone" data-letter=""></div>
+            </div>
+            
+            <div class="letters">
+                <div class="letter" draggable="true" data-letter="B">B</div>
+                <div class="letter" draggable="true" data-letter="O">O</div>
+                <div class="letter" draggable="true" data-letter="N">N</div>
+                <div class="letter" draggable="true" data-letter="I">I</div>
+                <div class="letter" draggable="true" data-letter="T">T</div>
+                <div class="letter" draggable="true" data-letter="A">A</div>
+            </div>
+            
+            <div id="romantic-message" class="hidden">
+                <div class="message-step active" data-step="1">
+                    <p>¡Hola bella, buenos dias! ¿Sabes de dónde viene la palabra "bonita"?</p>
+                    <p>Viene del latín "bonus", que significa bueno, pero en realidad, la palabra más bonita del mundo eres tú.</p>
+                    <button class="next-btn">Sigue leyendo </button>
+                </div>
+                
+                <div class="message-step" data-step="2">
+                    <p>¿Sabías que Bo de bonita viene de “boberías”?</p>
+                    <p>porque eso me sucede cuando te miro xD</p>
+                    <button class="next-btn">Y hay más... </button>
+                </div>
+                
+                <div class="message-step" data-step="3">
+                    <p>¿Y sabes qué Ni de bonita viene de “ninguna”?</p>
+                    <p>porque ninguna se compara contigo.</p>
+                    <button class="next-btn">Sigue bajando </button>
+                </div>
+                
+                <div class="message-step" data-step="4">
+                    <p>¿Y sabes qué Ta de bonita viene de “tarde”?</p>
+                    <p>por que tarde o temprano te hare reir jajaja</p>
+                    <button class="next-btn">Un poquito más... </button>
+                </div>
+                
+                <div class="message-step" data-step="5">
+                    <p> ¡Buen inicio de mes! </p>
+                    <p>Que cada día de este nuevo mes te regale motivos para sonreír, momentos que recordar y sueños que se acerquen un poquito más a ti.</p>
+                    <p> y recuerda! que lo estas haciendo bien, que eres una crack en lo que haces :D y sigue avanzado bella</p>
+                    <button id="surprise-btn">Click Aqui </button>
+                </div>
+                
+                <div class="surprise hidden">
+                    <p>¿Sabes algo? El mundo tiene millones de cosas bonitas...</p>
+                    <p>Pero ninguna se compara contigo. 💖</p>
+                    <p>Buena semana bella, toma aguita</p>
+                    <div class="heart">💞</div>
+                    <p class="signature">Con cariño, #shaopro</p>
+                    <div class="fireworks">🎆✨🎇🎉</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

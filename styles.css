@@ -1,0 +1,199 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+}
+
+h1 {
+    color: #e74c3c;
+    margin-bottom: 2rem;
+}
+
+.message {
+    margin-top: 1.5rem;
+}
+
+.drop-zones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 2rem 0;
+}
+
+.drop-zone {
+    width: 50px;
+    height: 50px;
+    border: 2px dashed #3498db;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.drop-zone.highlight {
+    background-color: #e3f2fd;
+    transform: scale(1.05);
+}
+
+.letters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.letter {
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: move;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.letter:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+}
+
+.letter.dragging {
+    opacity: 0.5;
+    transform: scale(1.1);
+}
+
+#romantic-message {
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+    border-radius: 20px;
+    display: none;
+    position: relative;
+    min-height: 250px;
+    overflow: hidden;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.message-step {
+    display: none;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.message-step.active {
+    display: block;
+}
+
+.next-btn, #surprise-btn {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    margin: 20px auto 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: block;
+    max-width: 250px;
+}
+
+.next-btn:hover, #surprise-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(45deg, #ff5252, #ff7b7b);
+}
+
+#romantic-message p {
+    margin: 1rem 0;
+    line-height: 1.7;
+    font-size: 1.2rem;
+    color: #2d3436;
+    text-align: center;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.heart {
+    font-size: 2.5rem;
+    margin: 1.5rem 0;
+    animation: pulse 1.5s infinite;
+}
+
+.surprise {
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.fireworks {
+    font-size: 2rem;
+    margin: 30px 0 20px;
+    animation: fireworks 2s infinite;
+}
+
+.signature {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 2rem;
+    color: #6a11cb;
+    margin: 20px 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fireworks {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
