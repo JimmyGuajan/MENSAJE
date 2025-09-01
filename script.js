@@ -1,91 +1,181 @@
+// Function to shuffle an array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const letters = document.querySelectorAll('.letter');
+    const lettersContainer = document.querySelector('.letters');
     const dropZones = document.querySelectorAll('.drop-zone');
     const romanticMessage = document.getElementById('romantic-message');
     const targetWord = 'BONITA';
-    let currentWord = ['', '', '', '', '', ''];
-    let draggedLetter = null;
-
-    // Make letters draggable
-    letters.forEach(letter => {
-        letter.setAttribute('draggable', 'true');
+    let currentWord = Array(6).fill('');
+    let currentLetterIndex = 0;
+    
+    // Create letter elements
+    const letters = 'BONITA'.split('');
+    const shuffledLetters = shuffleArray([...letters]);
+    
+    // Display shuffled letters
+    lettersContainer.innerHTML = '';
+    shuffledLetters.forEach((letter, index) => {
+        const letterElement = document.createElement('div');
+        letterElement.className = 'letter';
+        letterElement.textContent = letter;
+        letterElement.dataset.letter = letter;
+        letterElement.dataset.index = index;
+        lettersContainer.appendChild(letterElement);
         
-        // Add drag event listeners to letters
-        letter.addEventListener('dragstart', (e) => {
-            draggedLetter = letter;
-            letter.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', letter.dataset.letter);
-            // Hide the letter from its original position
-            setTimeout(() => {
-                letter.style.display = 'none';
-            }, 0);
-        });
-
-        letter.addEventListener('dragend', () => {
-            letter.classList.remove('dragging');
-            // Show the letter again if not dropped in a zone
-            if (letter.parentElement.classList.contains('letters')) {
-                letter.style.display = 'flex';
+        // Add click event to letters
+        letterElement.addEventListener('click', () => {
+            if (currentLetterIndex < targetWord.length) {
+                const currentTargetLetter = targetWord[currentLetterIndex];
+                
+                if (letter === currentTargetLetter) {
+                    // Add to current position
+                    dropZones[currentLetterIndex].textContent = letter;
+                    dropZones[currentLetterIndex].dataset.letter = letter;
+                    dropZones[currentLetterIndex].classList.add('has-letter');
+                    
+                    // Hide the clicked letter
+                    letterElement.style.visibility = 'hidden';
+                    
+                    // Update current word
+                    currentWord[currentLetterIndex] = letter;
+                    currentLetterIndex++;
+                    
+                    // Check if word is complete
+                    checkWord();
+                } else {
+                    // Wrong letter - visual feedback
+                    letterElement.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        letterElement.style.animation = '';
+                    }, 500);
+                }
             }
         });
     });
 
+    // Function to reset the game
+    function resetGame() {
+        currentWord = Array(6).fill('');
+        currentLetterIndex = 0;
+        
+        // Clear drop zones
+        dropZones.forEach(zone => {
+            zone.textContent = '';
+            zone.dataset.letter = '';
+            zone.classList.remove('has-letter');
+        });
+        
+        // Show all letters
+        document.querySelectorAll('.letter').forEach(letter => {
+            letter.style.visibility = 'visible';
+        });
+        
+        // Hide romantic message
+        romanticMessage.style.display = 'none';
+        romanticMessage.classList.add('hidden');
+    }
+
+    // Add click handler for reset button
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Reiniciar';
+    resetButton.className = 'reset-btn';
+    resetButton.addEventListener('click', resetGame);
+    document.querySelector('.container').appendChild(resetButton);
+
     // Add drop zone event listeners
-    dropZones.forEach((zone, index) => {
-        zone.addEventListener('dragover', (e) => {
-            e.preventDefault();
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        if (e.dataTransfer) {
             e.dataTransfer.dropEffect = 'move';
-            zone.classList.add('highlight');
-        });
+        }
+        e.currentTarget.classList.add('highlight');
+    };
 
-        zone.addEventListener('dragenter', (e) => {
-            e.preventDefault();
-            zone.classList.add('highlight');
-        });
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        e.currentTarget.classList.add('highlight');
+    };
 
-        zone.addEventListener('dragleave', () => {
-            zone.classList.remove('highlight');
-        });
+    const handleDragLeave = (e) => {
+        e.currentTarget.classList.remove('highlight');
+    };
 
+    const handleDrop = (e, dropIndex) => {
+        e.preventDefault();
+        const zone = dropZones[dropIndex];
+        zone.classList.remove('highlight');
+        
+        // If there's already a letter in this zone, return it to the letters container
+        if (zone.dataset.letter) {
+            const existingLetter = Array.from(letters).find(
+                l => l.dataset.letter === zone.dataset.letter
+            );
+            if (existingLetter) {
+                existingLetter.style.display = 'flex';
+            }
+        }
+        
+        // If we're dragging a letter
+        if (draggedLetter) {
+            // Remove from previous position
+            if (draggedLetter.parentElement.classList.contains('drop-zone')) {
+                draggedLetter.parentElement.textContent = '';
+                draggedLetter.parentElement.dataset.letter = '';
+                currentWord[Array.from(dropZones).indexOf(draggedLetter.parentElement)] = '';
+            } else {
+                // If coming from letters container, hide the original
+                draggedLetter.style.display = 'none';
+            }
+            
+            // Add to new position
+            zone.textContent = draggedLetter.dataset.letter;
+            zone.dataset.letter = draggedLetter.dataset.letter;
+            zone.classList.add('has-letter');
+            
+            // Update current word with the correct drop index
+            currentWord[dropIndex] = draggedLetter.dataset.letter;
+            
+            // Check if the word is complete
+            checkWord();
+        }
+    };
+
+    dropZones.forEach((zone) => {
+        // Mouse events
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('dragenter', handleDragEnter);
+        zone.addEventListener('dragleave', handleDragLeave);
+        
+        // Drop event for mouse
         zone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            zone.classList.remove('highlight');
-            
-            // If there's already a letter in this zone, return it to the letters container
-            if (zone.dataset.letter) {
-                const existingLetter = Array.from(letters).find(
-                    l => l.dataset.letter === zone.dataset.letter
-                );
-                if (existingLetter) {
-                    existingLetter.style.display = 'flex';
-                }
-            }
-            
-            // If we're dragging a letter
-            if (draggedLetter) {
-                // Remove from previous position
-                if (draggedLetter.parentElement.classList.contains('drop-zone')) {
-                    draggedLetter.parentElement.textContent = '';
-                    draggedLetter.parentElement.dataset.letter = '';
-                    currentWord[Array.from(dropZones).indexOf(draggedLetter.parentElement)] = '';
-                } else {
-                    // If coming from letters container, hide the original
-                    draggedLetter.style.display = 'none';
-                }
-                
-                // Add to new position
-                zone.textContent = draggedLetter.dataset.letter;
-                zone.dataset.letter = draggedLetter.dataset.letter;
-                zone.classList.add('has-letter');
-                
-                // Update current word
-                currentWord[index] = draggedLetter.dataset.letter;
-                
-                // Check if the word is complete
-                checkWord();
-            }
+            const dropIndex = Array.from(dropZones).indexOf(e.currentTarget);
+            handleDrop(e, dropIndex);
         });
+        
+        // Touch events
+        zone.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            const element = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            // Remove highlight from all zones
+            dropZones.forEach(z => z.classList.remove('highlight'));
+            
+            if (element && element.classList.contains('drop-zone') && draggedLetter) {
+                const dropIndex = Array.from(dropZones).indexOf(element);
+                handleDrop(e, dropIndex);
+            } else if (draggedLetter) {
+                // Return letter to original position if not dropped in a zone
+                draggedLetter.style.display = 'flex';
+            }
+        }, { passive: false });
     });
 
     function checkWord() {
@@ -175,5 +265,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 500);
         }
-    }
+    };
 });

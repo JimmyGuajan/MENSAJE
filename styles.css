@@ -37,17 +37,32 @@ h1 {
 }
 
 .drop-zone {
-    width: 50px;
-    height: 50px;
-    border: 2px dashed #3498db;
-    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #3498db;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     background-color: #f8f9fa;
     transition: all 0.3s ease;
+    margin: 5px;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+}
+
+.drop-zone.has-letter {
+    background-color: #e3f2fd;
+    border-style: solid;
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .drop-zone.highlight {
@@ -64,19 +79,46 @@ h1 {
 }
 
 .letter {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background-color: #3498db;
     color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    cursor: move;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     user-select: none;
     transition: all 0.2s ease;
+    margin: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.letter:active {
+    transform: scale(0.95);
+}
+
+.letter.correct {
+    background-color: #2ecc71;
+}
+
+.letter.wrong {
+    animation: shake 0.5s;
+    background-color: #e74c3c;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
 .letter:hover {
@@ -110,6 +152,34 @@ h1 {
 
 .message-step.active {
     display: block;
+}
+
+.reset-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #3498db, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background: linear-gradient(45deg, #2980b9, #27ae60);
+}
+
+.reset-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .next-btn, #surprise-btn {
